@@ -1,0 +1,17 @@
+name: Build Yazan OS ISO
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install tools
+        run: sudo apt-get update && sudo apt-get install -y build-essential grub-pc-bin grub-efi-amd64-bin grub-common xorriso mtools
+      - name: Build
+        run: make iso && make check
+      - uses: actions/upload-artifact@v4
+        with:
+          name: yazanos-iso
+          path: build/yazanos.iso
